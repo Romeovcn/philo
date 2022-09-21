@@ -1,32 +1,5 @@
 #include "philo.h"
 
-void	*function(void *p)
-{
-	printf("Value recevied as argument in starting routine: ");
-	printf("%i\n", *(int *)p);
-	(*(int*)p)++;
-	return NULL;
-}
-
-//void	function(void *p)
-//{
-//}
-
-//void philosophers()
-//{
-//	while (1)
-//	{
-//		if (FOURCHETTE_LEFT && FOURCHETTE_RIGHT)
-//		{
-//			PRINT INDEX TAKE FORK x2
-//			usleep
-
-//		}
-//	}
-//}
-
-
-
 int	check_can_eat(philo_list *lst, int index)
 {
 	while (lst->index != index)
@@ -46,7 +19,28 @@ void	set_eat(philo_list *lst, int index)
 	lst->next->left = 0;
 }
 
-void get_data(t_data *data, char **argv)
+void	*function(void *p)
+{
+	printf("Value received as argument in starting routine: %d\n", ((struct philo_data*)p)->index);
+//	while (1)
+//	{
+//		if (FOURCHETTE_LEFT && FOURCHETTE_RIGHT)
+//		{
+//			printf("timestamp_in_ms X has taken a fork\n");
+//			printf("timestamp_in_ms X has taken a fork\n");
+//			printf("timestamp_in_ms X is eating\n");
+//			update eat time
+//			usleep(time to eat)
+//			printf("timestamp_in_ms X is sleeping\n");
+//			usleep(time to sleep)
+//			printf("timestamp_in_ms X is thinking\n");
+//		}
+//	}
+	return (NULL);
+}
+
+
+void	get_data(t_data *data, char **argv)
 {
 	(*data).number_of_philosophers = atoi(argv[1]);
 	//(*data).time_to_die = atoi(argv[2]);
@@ -61,18 +55,32 @@ int	main(int argc, char **argv)
 	pthread_t t[5];
 	t_data data;
 	int i;
+	struct philo_data *philo_data;
 
 	//if (argc != 5 && argc != 5)
 	//{
 	//	printf("Wrong inputs\n");
 	//	exit(1);
 	//}
+	//-----------------------------------------//
+	//				Time stamp				   //
+	//-----------------------------------------//
+	//struct timeval current_time;
+	//gettimeofday(&current_time, NULL);
+	//printf("seconds : %ld\nmicro seconds : %d",
+	//		current_time.tv_sec,
+	//		current_time.tv_usec);
+	//-----------------------------------------//
+	//					Thread				   //
+	//-----------------------------------------//
 	get_data(&data, argv);
+	philo_data = malloc(data.number_of_philosophers * sizeof(struct philo_data));
 	i = 1;
 	while (i <= data.number_of_philosophers)
 	{
-		int j = 10;
-		pthread_create(&t[i - 1], NULL, function, &j);
+		philo_data[i - 1].data = &data;
+		philo_data[i - 1].index = i;
+		pthread_create(&t[i - 1], NULL, function, &philo_data[i - 1]);
 		i++;
 	}
 	i = 1;
@@ -82,6 +90,9 @@ int	main(int argc, char **argv)
 		i++;
 	}
 
+	//-----------------------------------------//
+	//				Fork list				   //
+	//-----------------------------------------//
 	//philo_list *philos;
 
 	//philos = ft_lstnew(1);

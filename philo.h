@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/time.h>
 # include <unistd.h>
 
 typedef struct s_data
@@ -15,6 +16,12 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
 }					t_data;
+
+struct philo_data
+{
+	int				index;
+	t_data			*data;
+};
 
 typedef struct s_list
 {
