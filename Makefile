@@ -23,7 +23,7 @@ NAME_BONUS = pipex
 
 CC = gcc
 
-CFLAGS = 
+CFLAGS = -pthread
 
 # -- RULES -- #
 

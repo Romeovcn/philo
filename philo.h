@@ -17,12 +17,6 @@ typedef struct s_data
 	int				number_of_times_each_philosopher_must_eat;
 }					t_data;
 
-struct philo_data
-{
-	int				index;
-	t_data			*data;
-};
-
 typedef struct s_list
 {
 	int				index;
@@ -31,5 +25,18 @@ typedef struct s_list
 	struct s_list	*next;
 	struct s_list	*previous;
 }					philo_list;
+
+typedef struct philo_data
+{
+	int				index;
+	t_data			*data;
+	philo_list		*philo_list;
+}					p_data;
+
+philo_list			*ft_lstnew(int index);
+philo_list			*ft_lstlast(philo_list *lst);
+void				ft_lstadd_back(philo_list **lst, philo_list *new);
+void				ft_lstset_previous(philo_list *lst);
+void				set_circular(philo_list *lst);
 
 #endif
