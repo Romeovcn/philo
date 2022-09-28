@@ -30,7 +30,8 @@ typedef struct philo_data
 {
 	int				index;
 	t_data			*data;
-	philo_list		*philo_list;
+	philo_list		*fork_lst;
+	long			last_eat;
 }					p_data;
 
 philo_list			*ft_lstnew(int index);

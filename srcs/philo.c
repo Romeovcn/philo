@@ -28,17 +28,16 @@ void	*function(void *p)
 		usleep(100000);
 	// printf("IS %d PAIR=%d\n", philo.index, philo.index % 2);
 	pthread_mutex_lock(&lock);
-	if (check_can_eat(philo.philo_list, philo.index))
+	if (check_can_eat(philo.fork_lst, philo.index))
 	{
-		set_eat(philo.philo_list, philo.index);
-		struct timeval current_time;
-		gettimeofday(&current_time, NULL);
-		printf("%ld:%ld: SET %d TO EAT\n",
-				current_time.tv_sec % 60,
-				current_time.tv_usec / 10000, philo.index);
+		set_eat(philo.fork_lst, philo.index);
+		struct timeval tv;
+		struct timezone tz;
+		gettimeofday(&tv, &tz);
+		printf("%ld: SET %d TO EAT\n", tv.tv_sec * 1000 + tv.tv_usec / 1000, philo.index);
 	}
 	pthread_mutex_unlock(&lock);
-	// printf("Im philo : %d Can i eat ? : %d\n", philo.index, check_can_eat(philo.philo_list ,philo.index));
+	// printf("Im philo : %d Can i eat ? : %d\n", philo.index, check_can_eat(philo.fork_lst ,philo.index));
 	//	while (1)
 	//	{
 	//		if (FOURCHETTE_LEFT && FOURCHETTE_RIGHT)
@@ -131,7 +130,7 @@ int	main(int argc, char **argv)
 	i = 1;
 	while (i <= data.number_of_philosophers)
 	{
-		philo_data[i - 1].philo_list = fork_lst;
+		philo_data[i - 1].fork_lst = fork_lst;
 		philo_data[i - 1].data = &data;
 		philo_data[i - 1].index = i;
 		pthread_create(&t[i - 1], NULL, function, &philo_data[i - 1]);
@@ -149,4 +148,5 @@ int	main(int argc, char **argv)
 	free_philo_list(fork_lst, data.number_of_philosophers);
 	free(philo_data);
 	pthread_mutex_destroy(&lock);
+//printf("%d\n", tv.tv_usec / 1000);
 }
